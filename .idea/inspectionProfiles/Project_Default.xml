@@ -1,0 +1,57 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyInterpreterInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="asgiref" />
+          <option value="django" />
+          <option value="psycopg2-binary" />
+          <option value="python-dotenv" />
+          <option value="sqlparse" />
+          <option value="tzdata" />
+          <option value="amqp" />
+          <option value="billiard" />
+          <option value="celery" />
+          <option value="click" />
+          <option value="click-didyoumean" />
+          <option value="click-plugins" />
+          <option value="click-repl" />
+          <option value="django-environ" />
+          <option value="djangorestframework" />
+          <option value="djangorestframework-simplejwt" />
+          <option value="kombu" />
+          <option value="packaging" />
+          <option value="prompt-toolkit" />
+          <option value="pyjwt" />
+          <option value="python-dateutil" />
+          <option value="redis" />
+          <option value="six" />
+          <option value="typing-extensions" />
+          <option value="tzlocal" />
+          <option value="vine" />
+          <option value="wcwidth" />
+          <option value="argon2-cffi" />
+          <option value="argon2-cffi-bindings" />
+          <option value="attrs" />
+          <option value="cffi" />
+          <option value="cryptography" />
+          <option value="django-cors-headers" />
+          <option value="drf-spectacular" />
+          <option value="gunicorn" />
+          <option value="inflection" />
+          <option value="jsonschema" />
+          <option value="jsonschema-specifications" />
+          <option value="psycopg" />
+          <option value="psycopg-binary" />
+          <option value="pycparser" />
+          <option value="pyyaml" />
+          <option value="referencing" />
+          <option value="rpds-py" />
+          <option value="uritemplate" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
