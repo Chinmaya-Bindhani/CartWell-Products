@@ -30,6 +30,11 @@ class Product(models.Model):
     sku = models.CharField(max_length=50 , unique=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+    seller_id = models.PositiveIntegerField(
+        db_index=True,
+        null=True,
+        blank=True
+    )
 
 
     def __str__(self):
