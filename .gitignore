@@ -15,3 +15,11 @@ env/
 
 # Keep example environment file
 !.env.example
+
+
+.idea/misc.xml
+.idea/vcs.xml
+
+
+config/__pycache__/
+config/settings/__pycache__/
