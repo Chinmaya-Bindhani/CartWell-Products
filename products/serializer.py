@@ -52,6 +52,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 
 class SellerProductSerializer(serializers.ModelSerializer):
+    is_active = serializers.BooleanField(default=True)
     images = serializers.ListField(child=serializers.ImageField(), write_only=True, required=False)
     videos = serializers.ListField(child=serializers.FileField(), write_only=True, required=False)
     video_urls = serializers.ListField(child=serializers.URLField(), write_only=True, required=False)
@@ -63,6 +64,14 @@ class SellerProductSerializer(serializers.ModelSerializer):
             "price", "stock", "sku", "is_active",
             "images", "videos", "video_urls",
         ]
+
+    def validate(self, attrs):
+        if self.instance is None:  # only on create, not on update
+            if not (attrs.get("images") or attrs.get("videos") or attrs.get("video_urls")):
+                raise serializers.ValidationError(
+                    "Add at least one image or video."
+                )
+        return attrs
 
     def create(self, validated_data):
         images = validated_data.pop("images", [])
