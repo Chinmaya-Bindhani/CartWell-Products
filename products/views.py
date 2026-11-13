@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-
+from django.core.cache import cache
 from django.db.models import Q, Avg
 from rest_framework import filters
+from rest_framework.response import Response
 from .models import Category, Product
 from .serializer import (
     CategorySerializer, ProductListSerializer, ProductDetailSerializer,
@@ -56,6 +57,16 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.filter(parent__isnull=True).prefetch_related("children")
 
+    def list(self, request, *args, **kwargs):
+        key = "categories:all"
+        data = cache.get(key)
+        if data is None:
+            print("DB HIT")
+            data = list(self.get_serializer(self.get_queryset(), many=True).data)
+            cache.set(key, data, timeout=3600)  # 1 hour
+        return Response(data)
+
+
 
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
@@ -88,3 +99,12 @@ class ProductDetailView(generics.RetrieveAPIView):
             .prefetch_related("images", "videos")
             .annotate(avg_rating=Avg("reviews__rating"))
         )
+    def retrieve(self, request, *args, **kwargs):
+        key = f"product:{kwargs['pk']}"
+        data = cache.get(key)
+        if data is None:
+            print("DB HIT")
+            response = super().retrieve(request, *args, **kwargs)
+            cache.set(key, response.data, timeout=900)   # 15 min
+            return response
+        return Response(data)

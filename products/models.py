@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from django.core.cache import cache
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -18,6 +20,11 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "categories"
+
+
+@receiver([post_save, post_delete], sender=Category)
+def clear_category_cache(sender, **kwargs):
+    cache.delete("categories:all")
 
 class Product(models.Model):
     category = models.ForeignKey(Category,on_delete=models.PROTECT,related_name="products")
@@ -64,3 +71,12 @@ class Review(models.Model):
 
     class Meta:
         unique_together = ("product", "user_id")
+
+@receiver([post_save, post_delete], sender=Product)
+def clear_product_cache(sender, instance, **kwargs):
+    cache.delete(f"product:{instance.pk}")
+
+@receiver([post_save, post_delete], sender=ProductImage)
+@receiver([post_save, post_delete], sender=ProductVideo)
+def clear_product_cache_on_media(sender, instance, **kwargs):
+    cache.delete(f"product:{instance.product_id}")
